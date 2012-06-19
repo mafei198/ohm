@@ -111,7 +111,7 @@ module Ohm
         end
 
         #make can exit commit from read
-        return if run(phase[:read], store) == :return
+        return false if run(phase[:read], store) == :return
 
         break if db.multi do
           run(phase[:write], store)
@@ -124,7 +124,11 @@ module Ohm
     end
 
     def run(procs, store)
-      procs.each { |p| p.call(store) }
+      procs.each do |p|
+        if p.call(store) == :return
+          return :return
+        end
+      end
     end
   end
 
