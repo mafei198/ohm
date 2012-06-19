@@ -110,7 +110,8 @@ module Ohm
           db.watch(*phase[:watch])
         end
 
-        run(phase[:read], store)
+        #make can exit commit from read
+        return if run(phase[:read], store) == :return
 
         break if db.multi do
           run(phase[:write], store)
