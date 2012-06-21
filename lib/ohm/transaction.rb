@@ -112,17 +112,10 @@ module Ohm
 
         #make can exit commit from read
         return false if run(phase[:read], store) == :return
-        puts '****************1****************'
-        p store
-        puts '****************1****************'
 
         break if db.multi do
           run(phase[:write], store)
         end
-
-        puts '****************2****************'
-        p store
-        puts '****************2****************'
 
         store = nil
       end
